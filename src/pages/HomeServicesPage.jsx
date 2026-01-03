@@ -30,6 +30,10 @@ const IMAGES = {
     "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1800&q=80",
 };
 
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
+
 const COPY = {
   en: {
     seo: {
@@ -181,8 +185,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Phone",
-      phoneValue: "1-561-476-0504",
+      channelLabel: "WhatsApp",
+      channelText: "Chat with us",
     },
 
     callChecklist: {
@@ -349,8 +353,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      channelLabel: "WhatsApp",
+      channelText: "Écrivez-nous",
     },
 
     callChecklist: {
@@ -418,7 +422,6 @@ export default function HomeServicesPage() {
         name: "Leads Podium",
         description: t.seo.description,
         areaServed: ["US", "CA"],
-        telephone: t.contact.phoneValue,
         url: window.location.href,
         serviceType: "Home services lead generation",
       },
@@ -492,12 +495,15 @@ export default function HomeServicesPage() {
               </a>
 
               <a
-                href={`tel:${t.contact.phoneValue.replace(/\D/g, "")}`}
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
-              >
+                >
                 <Phone className="w-4 h-4 mr-2" />
                 {t.heroCtaSecondary}
-              </a>
+                </a>
+
             </div>
 
             <div className="mt-8">
@@ -652,7 +658,7 @@ export default function HomeServicesPage() {
 
             <div className="mt-7 flex gap-3 flex-wrap">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
               >
                 {t.callChecklist.button}
@@ -660,12 +666,15 @@ export default function HomeServicesPage() {
               </Link>
 
               <a
-                href={`tel:${t.contact.phoneValue.replace(/\D/g, "")}`}
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-200 text-sm font-semibold text-gray-900 hover:border-gray-300 transition"
-              >
+                >
                 <Phone className="w-4 h-4 mr-2" />
-                {t.contact.phoneValue}
-              </a>
+                {language === "fr" ? "WhatsApp" : "WhatsApp"}
+                </a>
+
             </div>
 
             <p className="mt-4 text-xs text-gray-500">{t.callChecklist.note}</p>
@@ -815,7 +824,7 @@ export default function HomeServicesPage() {
 
           <div className="mt-7 flex gap-3 flex-wrap">
             <Link
-              to="/#pricing"
+              to="/#contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
             >
               {t.callChecklist.button}
@@ -823,12 +832,15 @@ export default function HomeServicesPage() {
             </Link>
 
             <a
-              href={`tel:${t.contact.phoneValue.replace(/\D/g, "")}`}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
             >
-              <Phone className="w-4 h-4 mr-2" />
-              {t.contact.phoneValue}
+            <Phone className="w-4 h-4 mr-2" />
+            {language === "fr" ? "WhatsApp" : "WhatsApp"}
             </a>
+
           </div>
         </div>
       </section>

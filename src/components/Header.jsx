@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Target, Phone, ChevronDown, Menu, X } from "lucide-react";
+import { Target, MessageCircle, ChevronDown, Menu, X } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { useLocation, Link } from "react-router-dom";
 
@@ -11,6 +11,8 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState(null); // "company" | "industries" | "legal" | null
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileOpenSection, setMobileOpenSection] = useState(null);
+  const WHATSAPP_URL = import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
 
   useEffect(() => {
     const onScroll = () => setNavScrolled(window.scrollY > 6);
@@ -70,11 +72,12 @@ export default function Header() {
         privacy: "Politique de confidentialité",
         cookies: "Politique de cookies",
         terms: "Conditions d’utilisation",
-        phoneLabel: "+1 561 476 0504",
+        phoneLabel: "WhatsApp",
         getStarted: "Get Started",
         menu: "Menu",
         close: "Fermer",
-        callNow: "Appeler",
+        phoneLabel: "WhatsApp",
+        callNow: "Nous écrire",
         langAria: "Changer la langue",
       },
       en: {
@@ -94,11 +97,11 @@ export default function Header() {
         privacy: "Privacy Policy",
         cookies: "Cookie Policy",
         terms: "Terms of Service",
-        phoneLabel: "+1 561 476 0504",
+        phoneLabel: "WhatsApp",
         getStarted: "Get Started",
         menu: "Menu",
         close: "Close",
-        callNow: "Call",
+        callNow: "Message us",
         langAria: "Change language",
       },
     }),
@@ -304,12 +307,15 @@ export default function Header() {
               </button>
 
               <a
-                href="tel:15614760504"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noreferrer"
                 className="hidden xl:flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-indigo-700 transition"
               >
-                <Phone className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 {tt.phoneLabel}
               </a>
+
 
               <a
                 href={hrefOrHomeHash("#contact")}
@@ -478,10 +484,16 @@ export default function Header() {
               {/* CONTACT */}
               <div className="rounded-2xl border border-gray-100 p-4">
                 <p className="text-sm font-semibold text-gray-900 mb-2">{tt.phoneLabel}</p>
-                <a href="tel:15614760504" className="inline-flex items-center gap-2 text-sm text-indigo-700 font-semibold hover:underline">
-                  <Phone className="w-4 h-4" />
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-indigo-700 font-semibold hover:underline"
+                >
+                  <MessageCircle className="w-4 h-4" />
                   {tt.callNow}
                 </a>
+
 
                 <a
                   href={hrefOrHomeHash("#contact")}

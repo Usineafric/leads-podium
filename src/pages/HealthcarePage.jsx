@@ -42,6 +42,10 @@ avatar1: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&
 
 };
 
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
+
 const COPY = {
   en: {
     seo: {
@@ -149,6 +153,18 @@ const COPY = {
       visuals: {
         creativeTitle: "Trust-first creative that converts",
         targetingTitle: "Local targeting & segmentation",
+        creativeText:  "Funnels designed to build trust quickly and capture the right patient signals.",
+        targetingText:  "Territory segmentation by ZIP/radius, service line, and urgency—so the right inquiries reach your team.",
+        fitTitle: "Patient fit filters",
+        fitText:  "Intake questions tuned to your policies so your team spends time on the patients you can actually serve.",
+        analyticsAlt: "Analytics",
+        analyticsTitle: "Outcome-based optimization",
+        analyticsText: "We iterate based on calls, booking outcomes and quality signals—not clicks.",
+        mapAlt: "Local targeting",
+        mapTitle: "Local segmentation",
+        mapText: "Target ZIP/radius and tailor messaging by service line and urgency.",
+
+
       },
 
       statsBadge: "Key levers",
@@ -201,6 +217,7 @@ const COPY = {
     contact: {
       phoneLabel: "Phone",
       phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -378,6 +395,15 @@ const COPY = {
       visuals: {
         creativeTitle: "Créa orientée confiance",
         targetingTitle: "Ciblage local & segmentation",
+        creativeText:  "Des funnels pensés pour instaurer la confiance rapidement et capter les bons signaux patients.",
+        targetingText:  "Segmentation par zone (ZIP/rayon), type de service et urgence — pour que les bonnes demandes arrivent à votre équipe.",
+        fitTitle: "Filtres d’adéquation patient",
+        fitText:  "Des questions d’intake alignées à vos règles pour que l’équipe se concentre sur les patients que vous pouvez réellement prendre en charge.",
+        analyticsAlt: "Analytique",
+        analyticsTitle: "Optimisation orientée résultats",
+        analyticsText: "On itère selon les appels, les résultats de prise de RDV et les signaux qualité — pas selon les clics.",
+
+
       },
 
       statsBadge: "Essentiel",
@@ -430,6 +456,7 @@ const COPY = {
     contact: {
       phoneLabel: "Téléphone",
       phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -542,18 +569,25 @@ export default function HealthcarePage() {
     if (existing) existing.remove();
 
     const script = document.createElement("script");
-    script.id = id;
-    script.type = "application/ld+json";
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      name: "Leads Podium",
-      description: t.seo.description,
-      areaServed: ["US", "CA"],
-      telephone: t.contact.phoneValue,
-      url: window.location.href,
-      serviceType: "Healthcare lead generation",
-    });
+script.id = id;
+script.type = "application/ld+json";
+script.text = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Leads Podium",
+  description: t.seo.description,
+  areaServed: ["US", "CA"],
+  url: window.location.href,
+  serviceType: "Healthcare lead generation",
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      url: WHATSAPP_URL,
+    },
+  ],
+});
+
     document.head.appendChild(script);
 
     return () => {
@@ -603,7 +637,7 @@ export default function HealthcarePage() {
 
             <div className="mt-7 flex gap-3 flex-wrap">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
                 {t.heroCtaPrimary}
@@ -611,12 +645,15 @@ export default function HealthcarePage() {
               </Link>
 
               <a
-                href="tel:15614760504"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
-              >
+                >
                 <Phone className="w-4 h-4 mr-2" />
-                {t.heroCtaSecondary}
-              </a>
+                {t.contact.channel}
+                </a>
+
             </div>
 
             <div className="mt-7">
@@ -763,7 +800,7 @@ export default function HealthcarePage() {
                 {p.visuals.creativeTitle}
               </div>
               <p className="mt-3 text-sm text-white/85 max-w-lg">
-                Funnels designed to build trust quickly and capture the right patient signals.
+                {p.visuals.creativeText}
               </p>
             </div>
           </div>
@@ -777,7 +814,7 @@ export default function HealthcarePage() {
                 <div className="font-bold">{p.visuals.targetingTitle}</div>
               </div>
               <p className="mt-3 text-sm text-gray-600">
-                Territory segmentation by ZIP/radius, service line, and urgency—so the right inquiries reach your team.
+                {p.visuals.targetingText}
               </p>
             </div>
 
@@ -786,10 +823,10 @@ export default function HealthcarePage() {
                 <div className="w-11 h-11 rounded-xl bg-violet-50 flex items-center justify-center">
                   <Stethoscope className="w-5 h-5 text-violet-600" />
                 </div>
-                <div className="font-bold">Patient fit filters</div>
+                <div className="font-bold">{p.visuals.fitTitle}</div>
               </div>
               <p className="mt-3 text-sm text-gray-600">
-                Intake questions tuned to your policies so your team spends time on the patients you can actually serve.
+                {p.visuals.fitText}
               </p>
             </div>
           </div>
@@ -820,7 +857,7 @@ export default function HealthcarePage() {
           <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white">
             <img
               src={IMAGES.analytics}
-              alt="Analytics"
+              alt={p.visuals.analyticsAlt}
               className="w-full h-64 object-cover"
               loading="lazy"
             />
@@ -828,10 +865,10 @@ export default function HealthcarePage() {
             <div className="absolute bottom-5 left-6 right-6 text-white">
               <p className="text-xs font-semibold flex items-center gap-2">
                 <LineChart className="w-4 h-4 text-indigo-200" />
-                Outcome-based optimization
+                {p.visuals.analyticsTitle}
               </p>
               <p className="text-[12px] text-white/80 mt-1">
-                We iterate based on calls, booking outcomes and quality signals—not clicks.
+                {p.visuals.analyticsText}
               </p>
             </div>
           </div>
@@ -839,7 +876,7 @@ export default function HealthcarePage() {
           <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white">
             <img
               src={IMAGES.map}
-              alt="Local targeting"
+              alt={p.visuals.mapAlt}
               className="w-full h-64 object-cover"
               loading="lazy"
             />
@@ -847,10 +884,10 @@ export default function HealthcarePage() {
             <div className="absolute bottom-5 left-6 right-6 text-white">
               <p className="text-xs font-semibold flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-200" />
-                Local segmentation
+                {p.visuals.mapTitle}
               </p>
               <p className="text-[12px] text-white/80 mt-1">
-                Target ZIP/radius and tailor messaging by service line and urgency.
+                {p.visuals.mapText}
               </p>
             </div>
           </div>
@@ -882,19 +919,22 @@ export default function HealthcarePage() {
 
             <div className="mt-6 flex gap-3 flex-wrap">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
               >
                 {t.callChecklist.button}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
               <a
-                href="tel:15614760504"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-200 text-sm font-semibold text-slate-900 hover:border-gray-300 transition"
-              >
+                >
                 <Phone className="w-4 h-4 mr-2" />
-                {t.contact.phoneValue}
-              </a>
+                {t.contact.channel}
+                </a>
+
             </div>
 
             <p className="mt-3 text-xs text-gray-500">{t.callChecklist.note}</p>
@@ -963,7 +1003,7 @@ export default function HealthcarePage() {
 
             <div className="pt-4">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
               >
                 {p.proofCta}
@@ -1034,19 +1074,22 @@ export default function HealthcarePage() {
 
           <div className="mt-7 flex gap-3 flex-wrap">
             <Link
-              to="/#pricing"
+              to="/#contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
             >
               {t.callChecklist.button}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <a
-              href="tel:15614760504"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
             >
-              <Phone className="w-4 h-4 mr-2" />
-              {t.contact.phoneValue}
+            <Phone className="w-4 h-4 mr-2" />
+            {t.contact.channel}
             </a>
+
           </div>
         </div>
       </section>

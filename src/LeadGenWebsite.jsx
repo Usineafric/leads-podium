@@ -12,7 +12,7 @@ import {
   BarChart3,
   Rocket,
   DollarSign,
-  Phone,
+  MessageCircle,
   Mail,
   MapPin,
   Star,
@@ -43,14 +43,22 @@ const LeadGenWebsite = () => {
     industry: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  
   const [scrollY, setScrollY] = useState(0);
   const [navScrolled, setNavScrolled] = useState(false);
   const { language } = useLanguage();
   const heroRef = useRef(null);
+  const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
 
+  const LEADS_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbyexefPORZiomXRmXHVQk6QLiwY-HBpwDvfPTBbeIcz_3Ai2j_nH1aMMONMVwJ3Q3qq/exec";
+
+   
   const t = translations[language] ?? translations.en;
 
-;
 
   // Scroll tracking for parallax effects
   useEffect(() => {
@@ -108,18 +116,66 @@ const LeadGenWebsite = () => {
     }
   }, [isVisible, counts.leads]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(t.contact.alertSuccess);
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      company: '',
-      industry: '',
-      message: '',
-    });
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (isSubmitting) return;
+
+  setIsSubmitting(true);
+  setSubmitError("");
+
+  const payload = {
+    name: formData.name?.trim(),
+    email: formData.email?.trim(),
+    phone: formData.phone?.trim(),
+    company: formData.company?.trim(),
+    industry: formData.industry,
+    message: formData.message?.trim(),
+    page: window.location.href,
+    language,
   };
+
+  try {
+    const res = await fetch(LEADS_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+
+    const text = await res.text();
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      throw new Error("Non-JSON response from endpoint: " + text.slice(0, 120));
+    }
+
+
+    if (!json?.ok) {
+      throw new Error(json?.error || "Submission failed");
+    }
+
+    alert(t.contact.alertSuccess);
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      industry: "",
+      message: "",
+    });
+  } catch (err) {
+    console.error("Lead submit error:", err);
+    setSubmitError(
+      language === "en"
+        ? "Something went wrong. Please try again or email us at sales@leadspodium.com."
+        : "Une erreur est survenue. Réessaie ou écris-nous à sales@leadspodium.com."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   // Routes existantes (pages déjà créées)
   const industryRoutes = {
@@ -717,172 +773,213 @@ const LeadGenWebsite = () => {
           </div>
         </div>
       </section>
+            
+            {/* Contact Form */}
+<section id="contact" className="py-28 px-6 lg:px-8 bg-gray-50">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-2 gap-16">
+      {/* Left Side */}
+      <div
+        id="contact-left"
+        data-animate
+        className={getAnimationClass("contact-left", "fade-right")}
+      >
+        <p className="text-indigo-600 font-semibold text-sm tracking-widest uppercase mb-4">
+          {t.contact.badge}
+        </p>
 
-      {/* Contact Form */}
-      <section id="contact" className="py-28 px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16">
-            {/* Left Side */}
-            <div id="contact-left" data-animate className={getAnimationClass('contact-left', 'fade-right')}>
-              <p className="text-indigo-600 font-semibold text-sm tracking-widest uppercase mb-4">
-                {t.contact.badge}
-              </p>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold mb-6 text-gray-900 tracking-tight">
-                {t.contact.title}
-              </h2>
-              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
-                {t.contact.description}
-              </p>
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold mb-6 text-gray-900 tracking-tight">
+          {t.contact.title}
+        </h2>
 
-              <div className="space-y-6 mb-12">
-                {[
-                  { icon: Mail, label: t.contact.infoEmailLabel, value: 'sales@leadspodium.com' },
-                  { icon: Phone, label: t.contact.infoPhoneLabel, value: '1-561-476-0504' },
-                  { icon: MapPin, label: t.contact.infoHqLabel, value: 'New York, NY' },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-gray-100">
-                      <item.icon className="w-6 h-6 text-indigo-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500 font-medium">
-                        {item.label}
-                      </div>
-                      <div className="font-display font-bold text-gray-900">
-                        {item.value}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+        <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+          {t.contact.description}
+        </p>
+
+        <div className="space-y-6 mb-12">
+          {[
+            {
+              icon: Mail,
+              label: t.contact.infoEmailLabel,
+              value: "sales@leadspodium.com",
+              href: "mailto:sales@leadspodium.com",
+            },
+            {
+              icon: MessageCircle,
+              label: "WhatsApp",
+              value: language === "en" ? "Message us" : "Nous écrire",
+              href: WHATSAPP_URL,
+            },
+            {
+              icon: MapPin,
+              label: t.contact.infoHqLabel,
+              value: t.contact.infoHqValue,
+            },
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-gray-100">
+                <item.icon className="w-6 h-6 text-indigo-600" />
               </div>
 
-              <img
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=350&fit=crop"
-                alt="Our team at work"
-                className="rounded-2xl w-full object-cover shadow-lg"
+              <div>
+                <div className="text-sm text-gray-500">{item.label}</div>
+
+                {item.href ? (
+                  <a href={item.href} className="text-gray-900 font-medium hover:underline">
+                    {item.value}
+                  </a>
+                ) : (
+                  <div className="text-gray-900 font-medium">{item.value}</div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <img
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=350&fit=crop"
+          alt="Our team at work"
+          className="rounded-2xl w-full object-cover shadow-lg"
+        />
+      </div>
+
+      {/* Form (RIGHT SIDE) */}
+      <div
+        id="contact-form"
+        data-animate
+        className={`bg-white rounded-3xl p-8 lg:p-10 shadow-xl border border-gray-100 ${getAnimationClass(
+          "contact-form",
+          "fade-left"
+        )}`}
+      >
+        <h3 className="text-2xl font-display font-bold text-gray-900 mb-8">
+          {t.contact.formTitle}
+        </h3>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t.contact.nameLabel}
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder={language === "en" ? "John Smith" : "Jean Dupont"}
+                className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
             </div>
 
-            {/* Form */}
-            <div
-              id="contact-form"
-              data-animate
-              className={`bg-white rounded-3xl p-8 lg:p-10 shadow-xl border border-gray-100 ${getAnimationClass(
-                'contact-form',
-                'fade-left'
-              )}`}
-            >
-              <h3 className="text-2xl font-display font-bold text-gray-900 mb-8">
-                {t.contact.formTitle}
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      {t.contact.nameLabel}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={language === 'en' ? 'John Smith' : 'Jean Dupont'}
-                      className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      {t.contact.phoneLabel}
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder={language === 'en' ? '(555) 123-4567' : '01 23 45 67 89'}
-                      className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                    />
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      {t.contact.companyLabel}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder={language === 'en' ? 'Acme Corp' : 'Société Exemple'}
-                      className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      {t.contact.emailLabel}
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder={language === 'en' ? 'you@company.com' : 'vous@entreprise.com'}
-                      className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    {t.contact.industryLabel}
-                  </label>
-                  <select
-                    value={formData.industry}
-                    onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                    className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 bg-white"
-                    required
-                  >
-                    <option value="" disabled>
-                      {t.contact.industryPlaceholder}
-                    </option>
-                    <option>{t.industries.realEstate.title}</option>
-                    <option>{t.industries.insurance.title}</option>
-                    <option>{t.industries.solar.title}</option>
-                    <option>{t.industries.homeServices.title}</option>
-                    <option>{t.industries.financial.title}</option>
-                    <option>{t.industries.healthcare.title}</option>
-                    <option>{t.industries.legal.title}</option>
-                    <option>{t.industries.education.title}</option>
-                    <option>{language === 'en' ? 'Other' : 'Autre'}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    {t.contact.messageLabel}
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder={t.contact.messagePlaceholder}
-                    className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full btn-primary text-white py-3.5 rounded-xl font-semibold text-base flex items-center justify-center"
-                >
-                  {t.contact.submitLabel}
-                </button>
-              </form>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t.contact.phoneLabel}
+              </label>
+              <input
+                type="tel"
+                required
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder={language === "en" ? "(555) 123-4567" : "01 23 45 67 89"}
+                className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+              />
             </div>
           </div>
-        </div>
-      </section>
 
-      
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t.contact.companyLabel}
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.company}
+                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                placeholder={language === "en" ? "Acme Corp" : "Société Exemple"}
+                className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t.contact.emailLabel}
+              </label>
+              <input
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder={language === "en" ? "you@company.com" : "vous@entreprise.com"}
+                className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              {t.contact.industryLabel}
+            </label>
+            <select
+              value={formData.industry}
+              onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+              className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 bg-white"
+              required
+            >
+              <option value="" disabled>
+                {t.contact.industryPlaceholder}
+              </option>
+              <option>{t.industries.realEstate.title}</option>
+              <option>{t.industries.insurance.title}</option>
+              <option>{t.industries.solar.title}</option>
+              <option>{t.industries.homeServices.title}</option>
+              <option>{t.industries.financial.title}</option>
+              <option>{t.industries.healthcare.title}</option>
+              <option>{t.industries.legal.title}</option>
+              <option>{t.industries.education.title}</option>
+              <option>{language === "en" ? "Other" : "Autre"}</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              {t.contact.messageLabel}
+            </label>
+            <textarea
+              rows={4}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              placeholder={t.contact.messagePlaceholder}
+              className="w-full border border-gray-200 rounded-xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full btn-primary text-white py-3.5 rounded-xl font-semibold text-base flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? (language === "en" ? "Sending..." : "Envoi...") : t.contact.submitLabel}
+          </button>
+
+          {submitError && (
+            <p className="text-sm text-red-600 font-medium mt-2">{submitError}</p>
+          )}
+        </form>
+      </div>
     </div>
+  </div>
+</section>
+
+     
+
+           
+        </div>
+      
+      
+    
   );
-};
+}
 
 export default LeadGenWebsite;

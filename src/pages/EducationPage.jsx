@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Sparkles,
   CheckCircle2,
-  Phone,
+  MessageCircle, // ✅ WhatsApp icon
   Target,
   Users,
   LineChart,
@@ -43,6 +44,9 @@ const IMAGES = {
   avatar4:
     "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?auto=format&fit=crop&w=96&q=80",
 };
+
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
 
 const COPY = {
   en: {
@@ -109,7 +113,7 @@ const COPY = {
         {
           title: "Admissions call flow",
           text: "Real-time delivery and field mapping so your team follows up fast.",
-          icon: Phone,
+          icon: BadgeCheck,
         },
         {
           title: "Tour & consultation scheduling",
@@ -174,6 +178,16 @@ const COPY = {
       visuals: {
         creativeTitle: "Creative & messaging built for trust",
         targetingTitle: "Territory targeting & cohort segmentation",
+        creativeHeading: "Messaging that increases consults and tours",
+        creativeText:
+        "We position your programs with clear outcomes, requirements, and next steps. The goal is qualified intent—not volume.",
+        creativePill: "Built for admissions conversion",
+
+        targetingHeading: "Targeting that matches your cohorts and campuses",
+        targetingText:
+        "Segment by program, campus, modality, geography, and decision window. Route leads to the right team with the right context.",
+        targetingPill: "Territory + program segmentation",
+
       },
 
       statsBadge: "What matters",
@@ -224,8 +238,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Phone",
-      phoneValue: "1-561-476-0504",
+      whatsappLabel: "WhatsApp",
+      whatsappDisplay: "Chat with us",
       locationLabel: "Coverage",
       locationValue: "United States (multi-state)",
     },
@@ -307,7 +321,7 @@ const COPY = {
         {
           title: "Flux orienté admissions",
           text: "Livraison temps réel + mapping de champs pour rappeler vite.",
-          icon: Phone,
+          icon: BadgeCheck,
         },
         {
           title: "Visite & consultation",
@@ -372,6 +386,16 @@ const COPY = {
       visuals: {
         creativeTitle: "Créa & messages pensés pour la confiance",
         targetingTitle: "Ciblage géographique & segmentation par cohortes",
+        creativeHeading: "Messages qui augmentent les RDV et les visites",
+        creativeText:
+        "Nous positionnons vos programmes avec des résultats clairs, des prérequis et des prochaines étapes. Objectif : de l’intention qualifiée—pas du volume.",
+        creativePill: "Pensé pour convertir côté admissions",
+
+        targetingHeading: "Un ciblage aligné sur vos cohortes et vos campus",
+        targetingText:
+        "Segmentez par programme, campus, modalité, zone géographique et fenêtre de décision. Routez chaque demande vers la bonne équipe, avec le bon contexte.",
+        targetingPill: "Segmentation territoire + programme",
+
       },
 
       statsBadge: "Essentiel",
@@ -423,7 +447,7 @@ const COPY = {
 
     contact: {
       phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      whatsappDisplay: "Écrivez-nous",
       locationLabel: "Couverture",
       locationValue: "États-Unis (multi-États)",
     },
@@ -491,7 +515,6 @@ export default function EducationPage() {
       name: "Leads Podium",
       description: t.seo.description,
       areaServed: ["US", "CA"],
-      telephone: t.contact.phoneValue,
       url: window.location.href,
       serviceType: t.seo.serviceType,
     });
@@ -538,20 +561,21 @@ export default function EducationPage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href={`tel:${t.contact.phoneValue}`}
+                href={WHATSAPP_URL}
+target="_blank"
+rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
-                <Phone className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 {t.heroCtaSecondary}
               </a>
 
-              <a
-                href="#discovery"
+              <Link to="/#contact"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 text-white px-6 py-3 text-sm font-semibold shadow-sm hover:bg-indigo-700 transition"
               >
                 {t.heroCtaPrimary}
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
 
             <div className="mt-8">
@@ -609,13 +633,13 @@ export default function EducationPage() {
                   </div>
                 </div>
 
-                <a
-                  href="#discovery"
+                <Link to="/#contact"
                   className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 text-white px-5 py-3 text-sm font-semibold shadow-sm hover:bg-indigo-700 transition"
                 >
                   {t.rightCard.button}
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
+
               </div>
             </div>
 
@@ -716,17 +740,17 @@ export default function EducationPage() {
                   {p.visuals.creativeTitle}
                 </p>
                 <h3 className="mt-2 text-xl font-extrabold text-gray-900">
-                  Messaging that increases consults and tours
+                  {p.visuals.creativeHeading}
                 </h3>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                  We position your programs with clear outcomes, requirements, and next steps. The goal is qualified intent—not volume.
+                  {p.visuals.creativeText}
                 </p>
 
                 <div className="mt-5 flex items-center gap-3 text-sm text-gray-700">
                   <div className="w-9 h-9 rounded-2xl bg-indigo-50 flex items-center justify-center">
                     <Rocket className="w-5 h-5 text-indigo-700" />
                   </div>
-                  <span className="font-semibold">Built for admissions conversion</span>
+                  <span className="font-semibold">{p.visuals.creativePill}</span>
                 </div>
               </div>
 
@@ -742,17 +766,17 @@ export default function EducationPage() {
                   {p.visuals.targetingTitle}
                 </p>
                 <h3 className="mt-2 text-xl font-extrabold text-gray-900">
-                  Targeting that matches your cohorts and campuses
+                  {p.visuals.targetingHeading}
                 </h3>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                  Segment by program, campus, modality, geography, and decision window. Route leads to the right team with the right context.
+                  {p.visuals.targetingText}
                 </p>
 
                 <div className="mt-5 flex items-center gap-3 text-sm text-gray-700">
                   <div className="w-9 h-9 rounded-2xl bg-indigo-50 flex items-center justify-center">
                     <MapPin className="w-5 h-5 text-indigo-700" />
                   </div>
-                  <span className="font-semibold">Territory + program segmentation</span>
+                  <span className="font-semibold">{p.visuals.targetingPill}</span>
                 </div>
               </div>
 
@@ -803,13 +827,12 @@ export default function EducationPage() {
               ))}
             </ul>
 
-            <a
-              href="#discovery"
+            <Link to="/#contact"
               className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 text-white px-6 py-3 text-sm font-semibold shadow-sm hover:bg-indigo-700 transition"
             >
               {p.proofCta}
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
 
           <div className="rounded-3xl border border-gray-100 bg-gray-50 p-6 md:p-7">
@@ -917,11 +940,13 @@ export default function EducationPage() {
 
             <div className="mt-7 flex flex-wrap gap-3">
               <a
-                href={`tel:${t.contact.phoneValue}`}
+                href={WHATSAPP_URL}
+target="_blank"
+rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
-                <Phone className="w-4 h-4" />
-                {t.contact.phoneLabel}: {t.contact.phoneValue}
+                <MessageCircle className="w-4 h-4" />
+                {t.contact.whatsappLabel}: {t.contact.whatsappDisplay}
               </a>
             </div>
 
@@ -948,7 +973,9 @@ export default function EducationPage() {
             </ul>
 
             <a
-              href={`tel:${t.contact.phoneValue}`}
+              href={WHATSAPP_URL}
+target="_blank"
+rel="noopener noreferrer"
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
             >
               {t.callChecklist.button}

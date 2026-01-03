@@ -7,7 +7,7 @@ import {
   LineChart,
   ShieldCheck,
   ArrowRight,
-  Phone,
+  MessageCircle,
   CheckCircle2,
   BadgeCheck,
   Sparkles,
@@ -35,6 +35,9 @@ const IMAGES = {
   testimonialAvatar4:
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&q=80",
 };
+
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
 
 const COPY = {
   en: {
@@ -359,7 +362,7 @@ const COPY = {
 
     contact: {
       phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      phoneValue: "+33 6 12 34 56 78",
     },
 
     callChecklist: {
@@ -420,15 +423,19 @@ export default function RealEstatePage() {
     script.id = id;
     script.type = "application/ld+json";
     script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      name: "Leads Podium",
-      description: t.seo.description,
-      areaServed: ["US", "CA"],
-      telephone: t.contact.phoneValue,
-      url: window.location.href,
-      serviceType: "Real estate lead generation",
-    });
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Leads Podium",
+  description: t.seo.description,
+  areaServed: ["US", "CA"],
+contactPoint: {
+"@type": "ContactPoint",
+  contactType: "sales",
+   url: WHATSAPP_URL,
+ },
+  url: window.location.href,
+  serviceType: "Real estate lead generation",
+});
     document.head.appendChild(script);
 
     return () => {
@@ -488,7 +495,7 @@ export default function RealEstatePage() {
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/15 text-white px-6 py-3 text-sm font-semibold border border-white/15 transition"
               >
-                <Phone className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 {t.heroCtaSecondary}
               </a>
             </div>
@@ -783,11 +790,13 @@ export default function RealEstatePage() {
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="tel:15614760504"
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-6 py-3 text-sm font-semibold"
             >
-              <Phone className="w-4 h-4" />
-              {t.contact.phoneLabel}: {t.contact.phoneValue}
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
             </a>
 
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-3 text-sm">
@@ -812,12 +821,15 @@ export default function RealEstatePage() {
           </ul>
 
           <a
-            href="tel:15614760504"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer"
             className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 text-sm font-semibold transition"
           >
             {t.callChecklist.button}
             <ArrowRight className="w-4 h-4" />
           </a>
+
 
           <div className="mt-3 text-xs text-white/70">{t.callChecklist.note}</div>
         </div>

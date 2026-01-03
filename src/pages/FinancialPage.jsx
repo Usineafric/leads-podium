@@ -19,6 +19,8 @@ import {
   Landmark,
 } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageContext";
+import { Link } from "react-router-dom";
+
 
 /**
  * Free-to-use external images (Unsplash).
@@ -38,6 +40,10 @@ const IMAGES = {
   avatar3: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?auto=format&fit=crop&w=96&q=80",
   avatar4: "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=96&q=80",
 };
+
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
 
 const COPY = {
   en: {
@@ -164,9 +170,29 @@ const COPY = {
         },
       ],
 
+      testimonials: {
+        cardTitle: "Quality-first process",
+        cardSubtitle: "Built for consultation rate and downstream conversion",
+        items: [
+            { avatar: IMAGES.avatar1, name: "Operations Lead", text: "Cleaner inquiries and better consult intent." },
+            { avatar: IMAGES.avatar2, name: "Managing Partner", text: "Transparent optimization, no fluff." },
+            { avatar: IMAGES.avatar3, name: "Advisor Team Lead", text: "Volume aligned to our capacity—quality improved." },
+        ],
+        note:
+            "We focus on qualification depth, response speed and feedback loops—so you close more with the same effort.",
+        },
+
+
       visuals: {
         creativeTitle: "Trust-first creative & messaging",
         targetingTitle: "Territory targeting & segmentation",
+        meetingAlt: "Rendez-vous conseil",
+        analyticsAlt: "Analytique",
+        creativeText:
+        "Nous construisons des pages et des messages crédibles qui réduisent les demandes hors cible et augmentent l’intention de consultation.",
+        targetingText:
+        "Routage par segment et par zone pour que le bon conseiller reçoive la bonne demande, rapidement.",
+
       },
 
       statsBadge: "What matters",
@@ -217,8 +243,7 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Phone",
-      phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -358,9 +383,29 @@ const COPY = {
         },
       ],
 
+      testimonials: {
+        cardTitle: "Process orienté qualité",
+        cardSubtitle: "Conçu pour le taux de consultation et la conversion en clients",
+        items: [
+            { avatar: IMAGES.avatar1, name: "Responsable Ops", text: "Des demandes plus propres et une meilleure intention de consultation." },
+            { avatar: IMAGES.avatar2, name: "Associé gérant", text: "Optimisation transparente, sans blabla." },
+            { avatar: IMAGES.avatar3, name: "Team lead conseillers", text: "Volume aligné à notre capacité — la qualité a progressé." },
+        ],
+        note:
+            "On se concentre sur la qualification, la vitesse de rappel et les boucles de feedback — pour signer plus avec le même effort.",
+        },
+
+
       visuals: {
         creativeTitle: "Créa & messages pensés pour la confiance",
         targetingTitle: "Ciblage géographique & segmentation",
+        meetingAlt: "Rendez-vous conseil",
+        analyticsAlt: "Analytique",
+        creativeText:
+        "Nous construisons des pages et des messages crédibles qui réduisent les demandes hors cible et augmentent l’intention de consultation.",
+        targetingText:
+        "Routage par segment et par zone pour que le bon conseiller reçoive la bonne demande, rapidement.",
+
       },
 
       statsBadge: "Essentiel",
@@ -411,8 +456,7 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -498,7 +542,7 @@ export default function FinancialPage() {
         <div className="absolute inset-0">
           <img
             src={IMAGES.hero}
-            alt="Financial lead generation"
+            alt={t.seo.ogTitle}
             className="h-full w-full object-cover"
             loading="eager"
           />
@@ -542,12 +586,17 @@ export default function FinancialPage() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
                 <a
-                  href={`tel:${t.contact.phoneValue.replace(/[^0-9]/g, "")}`}
-                  className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3 text-white font-semibold backdrop-blur hover:bg-white/15 transition"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-white font-semibold hover:bg-indigo-700 transition"
                 >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {t.heroCtaSecondary}
+                <Phone className="w-4 h-4 mr-2" />
+                {t.contact.channel}
                 </a>
+
+
+
               </div>
 
               <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -710,21 +759,21 @@ export default function FinancialPage() {
           {/* Visuals (same vibe as other pages) */}
           <div className="mt-14 grid gap-8 lg:grid-cols-2 items-center">
             <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-              <img src={IMAGES.meeting} alt="Advisory meeting" className="w-full h-80 object-cover" loading="lazy" />
+              <img src={IMAGES.meeting} alt={p.visuals.meetingAlt} className="w-full h-80 object-cover" loading="lazy" />
             </div>
             <div>
               <h3 className="text-2xl font-display font-extrabold text-gray-900">{p.visuals.creativeTitle}</h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                We build credible pages and messaging that reduce low-quality inquiries and increase consult intent.
+                {p.visuals.creativeText}
               </p>
 
               <div className="mt-6 rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-                <img src={IMAGES.analytics} alt="Analytics" className="w-full h-64 object-cover" loading="lazy" />
+                <img src={IMAGES.analytics} alt={p.visuals.analyticsAlt} className="w-full h-64 object-cover" loading="lazy" />
               </div>
 
               <h3 className="mt-8 text-2xl font-display font-extrabold text-gray-900">{p.visuals.targetingTitle}</h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                Route leads by service line and territory so the right advisor sees the right inquiry fast.
+                {p.visuals.targetingText}
               </p>
             </div>
           </div>
@@ -788,22 +837,18 @@ export default function FinancialPage() {
                   <BadgeCheck className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <p className="font-display font-bold text-gray-900">Quality-first process</p>
-                  <p className="text-gray-600 text-sm">Built for consultation rate and downstream conversion</p>
+                  <p className="font-display font-bold text-gray-900">{p.testimonials.cardTitle}</p>
+                  <p className="text-gray-600 text-sm">{p.testimonials.cardSubtitle}</p>
                 </div>
               </div>
 
               <div className="mt-7 space-y-5">
-                {[
-                  { a: IMAGES.avatar1, n: "Operations Lead", t: "Cleaner inquiries and better consult intent." },
-                  { a: IMAGES.avatar2, n: "Managing Partner", t: "Transparent optimization, no fluff." },
-                  { a: IMAGES.avatar3, n: "Advisor Team Lead", t: "Volume aligned to our capacity—quality improved." },
-                ].map((x) => (
-                  <div key={x.n} className="flex items-start gap-3">
-                    <img src={x.a} alt={x.n} className="w-10 h-10 rounded-full object-cover" loading="lazy" />
+                {p.testimonials.items.map((x) => (
+                  <div key={x.name} className="flex items-start gap-3">
+                    <img src={x.avatar} alt={x.name} className="w-10 h-10 rounded-full object-cover" loading="lazy" />
                     <div>
-                      <p className="text-gray-900 font-semibold">{x.n}</p>
-                      <p className="text-gray-600 text-sm leading-relaxed mt-1">{x.t}</p>
+                      <p className="text-gray-900 font-semibold">{x.name}</p>
+                      <p className="text-gray-600 text-sm leading-relaxed mt-1">{x.text}</p>
                     </div>
                   </div>
                 ))}
@@ -811,7 +856,7 @@ export default function FinancialPage() {
 
               <div className="mt-7 rounded-xl bg-gray-50 p-5 border border-gray-200">
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  We focus on qualification depth, response speed and feedback loops—so you close more with the same effort.
+                  {p.testimonials.note}
                 </p>
               </div>
             </div>
@@ -857,19 +902,21 @@ export default function FinancialPage() {
 
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
                   <a
-                    href={`tel:${t.contact.phoneValue.replace(/[^0-9]/g, "")}`}
-                    className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-white font-semibold hover:bg-indigo-700 transition"
-                  >
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3 text-white font-semibold backdrop-blur hover:bg-white/15 transition"
+                    >
                     <Phone className="w-4 h-4 mr-2" />
-                    {t.contact.phoneValue}
-                  </a>
-                  <a
-                    href="/#contact"
+                    {t.contact.channel}
+                    </a>
+
+                  <Link to="/#contact"
                     className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3 text-white font-semibold hover:bg-white/15 transition"
                   >
                     {t.heroCtaPrimary}
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
+                  </Link>
                 </div>
               </div>
 
@@ -894,13 +941,12 @@ export default function FinancialPage() {
                   ))}
                 </ul>
 
-                <a
-                  href="/#contact"
+                <Link to="/#contact"
                   className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-white font-semibold hover:bg-indigo-700 transition"
                 >
                   {t.callChecklist.button}
                   <ArrowRight className="w-4 h-4 ml-2" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

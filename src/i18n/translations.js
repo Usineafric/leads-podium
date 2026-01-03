@@ -266,6 +266,8 @@ export const translations = {
       infoEmailLabel: "Email",
       infoPhoneLabel: "Phone",
       infoHqLabel: "HQ",
+      infoPhoneValue: "1-561-476-0504",
+      infoHqValue: "New York, NY",
     },
 
 
@@ -339,7 +341,7 @@ export const translations = {
       industries: "Industries",
       howWeWork: "Notre méthode",
       pricing: "Tarifs",
-      phoneLabel: "1-561-476-0504",
+      phoneLabel: "+33 1 23 45 67 89",
       getStarted: "Démarrer",
     },
 
@@ -601,6 +603,8 @@ contact: {
   infoEmailLabel: "Email",
   infoPhoneLabel: "Téléphone",
   infoHqLabel: "HQ",
+  infoPhoneValue: "+33 6 12 34 56 78",
+  infoHqValue: "New York, NY",
 },
 
 

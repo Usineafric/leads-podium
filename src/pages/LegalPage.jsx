@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   ShieldCheck,
   Phone,
+  MessageCircle,
   Target,
   LineChart,
   BadgeCheck,
@@ -43,6 +44,10 @@ avatar1: "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?auto=form
   avatar4: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&w=96&q=80",
 
 };
+
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
 
 const COPY = {
   en: {
@@ -154,6 +159,19 @@ const COPY = {
         extraTitle: "Case-fit filters",
         extraText:
           "Intake questions designed to reduce low-fit inquiries, so your team focuses on cases you can actually take.",
+        creativeText:
+        "Trust elements + clear expectations + qualification prompts—designed to reduce low-fit noise.",
+        caseFitAlt: "Intake quality",
+        caseFitTitle: "Intake built for case fit",
+        caseFitText: "Capture the details that matter so your team can qualify quickly.",
+
+        localAlt: "Local targeting",
+        localTitle: "Local intent capture",
+        localText: "Tailor messaging by city and urgency signals to improve consult quality.",
+
+        targetingText:
+        "Territory segmentation by ZIP/radius, practice area, and urgency—so the right inquiries reach your intake team.",
+
       },
 
       statsBadge: "Key levers",
@@ -204,7 +222,7 @@ const COPY = {
     },
 
     contact: {
-      phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -384,6 +402,19 @@ const COPY = {
         extraTitle: "Filtres de fit dossier",
         extraText:
           "Des questions d’intake pour réduire le bruit et concentrer l’équipe sur les dossiers réellement compatibles.",
+        creativeText:
+          "Éléments de confiance + attentes claires + questions de qualification—pour réduire le bruit et les demandes hors-cible.",
+        caseFitAlt: "Qualité de l’intake",
+        caseFitTitle: "Intake conçu pour le fit dossier",
+        caseFitText: "Captez les informations qui comptent pour qualifier rapidement.",
+
+        localAlt: "Ciblage local",
+        localTitle: "Capture d’intention locale",
+        localText: "Adaptez le message par ville et signaux d’urgence pour améliorer la qualité des consultations.",
+  
+        targetingText: "Segmentation par zone (ZIP/rayon), domaine et urgence—pour que les bonnes demandes arrivent à votre équipe intake.",
+
+  
       },
 
       statsBadge: "Essentiel",
@@ -434,7 +465,7 @@ const COPY = {
     },
 
     contact: {
-      phoneValue: "1-561-476-0504",
+      channel: "WhatsApp",
     },
 
     callChecklist: {
@@ -554,7 +585,6 @@ export default function LegalPage() {
       name: "Leads Podium",
       description: t.seo.description,
       areaServed: ["US", "CA"],
-      telephone: t.contact.phoneValue,
       url: window.location.href,
       serviceType: "Legal lead generation",
     });
@@ -607,7 +637,7 @@ export default function LegalPage() {
 
             <div className="mt-7 flex gap-3 flex-wrap">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
                 {t.heroCtaPrimary}
@@ -615,12 +645,15 @@ export default function LegalPage() {
               </Link>
 
               <a
-                href="tel:15614760504"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
-              >
-                <Phone className="w-4 h-4 mr-2" />
+                >
+                <MessageCircle className="w-4 h-4 mr-2" />
                 {t.heroCtaSecondary}
-              </a>
+                </a>
+
             </div>
 
             <div className="mt-7">
@@ -767,7 +800,7 @@ export default function LegalPage() {
                 {p.visuals.creativeTitle}
               </div>
               <p className="mt-3 text-sm text-white/85 max-w-lg">
-                Trust elements + clear expectations + qualification prompts—designed to reduce low-fit noise.
+                {p.visuals.creativeText}
               </p>
             </div>
           </div>
@@ -781,7 +814,7 @@ export default function LegalPage() {
                 <div className="font-bold">{p.visuals.targetingTitle}</div>
               </div>
               <p className="mt-3 text-sm text-gray-600">
-                Territory segmentation by ZIP/radius, practice area, and urgency—so the right inquiries reach your intake team.
+                {p.visuals.targetingText}
               </p>
             </div>
 
@@ -822,7 +855,7 @@ export default function LegalPage() {
           <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white">
             <img
               src={IMAGES.contract}
-              alt="Intake quality"
+              alt={p.visuals.caseFitAlt}
               className="w-full h-64 object-cover"
               loading="lazy"
             />
@@ -830,10 +863,10 @@ export default function LegalPage() {
             <div className="absolute bottom-5 left-6 right-6 text-white">
               <p className="text-xs font-semibold flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-indigo-200" />
-                Intake built for case fit
+                {p.visuals.caseFitTitle}
               </p>
               <p className="text-[12px] text-white/80 mt-1">
-                Capture the details that matter so your team can qualify quickly.
+                {p.visuals.caseFitText}
               </p>
             </div>
           </div>
@@ -841,7 +874,7 @@ export default function LegalPage() {
           <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white">
             <img
               src={IMAGES.city}
-              alt="Local targeting"
+              alt={p.visuals.localAlt}
               className="w-full h-64 object-cover"
               loading="lazy"
             />
@@ -849,10 +882,10 @@ export default function LegalPage() {
             <div className="absolute bottom-5 left-6 right-6 text-white">
               <p className="text-xs font-semibold flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-200" />
-                Local intent capture
+                {p.visuals.localTitle}
               </p>
               <p className="text-[12px] text-white/80 mt-1">
-                Tailor messaging by city and urgency signals to improve consult quality.
+                {p.visuals.localText}
               </p>
             </div>
           </div>
@@ -884,19 +917,22 @@ export default function LegalPage() {
 
             <div className="mt-6 flex gap-3 flex-wrap">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
               >
                 {t.callChecklist.button}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
               <a
-                href="tel:15614760504"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-200 text-sm font-semibold text-slate-900 hover:border-gray-300 transition"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                {t.contact.phoneValue}
-              </a>
+  href={WHATSAPP_URL}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-200 text-sm font-semibold text-slate-900 hover:border-gray-300 transition"
+>
+  <MessageCircle className="w-4 h-4 mr-2" />
+  WhatsApp
+</a>
+
             </div>
 
             <p className="mt-3 text-xs text-gray-500">{t.callChecklist.note}</p>
@@ -964,7 +1000,7 @@ export default function LegalPage() {
 
             <div className="pt-4">
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
               >
                 {p.proofCta}
@@ -1034,19 +1070,22 @@ export default function LegalPage() {
 
           <div className="mt-7 flex gap-3 flex-wrap">
             <Link
-              to="/#pricing"
+              to="/#contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
             >
               {t.callChecklist.button}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <a
-              href="tel:15614760504"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
-            >
-              <Phone className="w-4 h-4 mr-2" />
-              {t.contact.phoneValue}
-            </a>
+  href={WHATSAPP_URL}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
+>
+  <MessageCircle className="w-4 h-4 mr-2" />
+  WhatsApp
+</a>
+
           </div>
         </div>
       </section>

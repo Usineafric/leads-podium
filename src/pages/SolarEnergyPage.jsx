@@ -25,6 +25,10 @@ const IMAGES = {
     "https://images.unsplash.com/photo-1556761175-129418cb2dfe?auto=format&fit=crop&w=2200&q=80",
 };
 
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
+
 const COPY = {
   en: {
     seo: {
@@ -180,8 +184,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Phone",
-      phoneValue: "1-561-476-0504",
+      channelLabel: "WhatsApp",
+      channelText: "Chat with us",
     },
 
     callChecklist: {
@@ -352,8 +356,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      channelLabel: "WhatsApp",
+      channelText: "Écrivez-nous",
     },
 
     callChecklist: {
@@ -420,6 +424,7 @@ export default function SolarEnergyPage() {
       description: t.seo.description,
       areaServed: "US",
       serviceType: "Solar & Energy Lead Generation",
+      url: window.location.href,
     });
     document.head.appendChild(script);
 
@@ -458,18 +463,20 @@ export default function SolarEnergyPage() {
 
               <div className="mt-7 flex gap-3 flex-wrap">
                 <Link
-                  to="/#pricing"
+                  to="/#contact"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-700 transition"
                 >
                   {p.heroCta}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
                 <a
-                  href="tel:15614760504"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
                 >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {t.contact.phoneValue}
+                <Phone className="w-4 h-4 mr-2" />
+                {language === "fr" ? "WhatsApp" : "WhatsApp"}
                 </a>
               </div>
 
@@ -521,7 +528,7 @@ export default function SolarEnergyPage() {
               </div>
 
               <Link
-                to="/#pricing"
+                to="/#contact"
                 className="mt-6 w-full inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-950 transition"
               >
                 {t.callChecklist.button}
@@ -725,7 +732,7 @@ export default function SolarEnergyPage() {
           </div>
 
           <Link
-            to="/#pricing"
+            to="/#contact"
             className="mt-8 inline-flex items-center justify-center px-6 py-3 rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-700 transition"
           >
             {p.proofCta}
@@ -767,19 +774,22 @@ export default function SolarEnergyPage() {
 
           <div className="mt-7 flex gap-3 flex-wrap">
             <Link
-              to="/#pricing"
+              to="/#contact"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white text-slate-950 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
             >
               {t.callChecklist.button}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <a
-              href="tel:15614760504"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/20 text-sm font-semibold text-white hover:border-white/40 transition"
             >
-              <Phone className="w-4 h-4 mr-2" />
-              {t.contact.phoneValue}
+            <Phone className="w-4 h-4 mr-2" />
+            {language === "fr" ? "WhatsApp" : "WhatsApp"}
             </a>
+
           </div>
         </div>
       </section>

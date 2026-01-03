@@ -3,7 +3,7 @@ import {
   Sparkles,
   CheckCircle2,
   ShieldCheck,
-  Phone,
+  MessageCircle,
   Target,
   Users,
   LineChart,
@@ -15,6 +15,7 @@ import {
   HeartPulse,
   Home,
   Briefcase,
+  Phone,
 } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageContext";
 
@@ -39,6 +40,10 @@ const IMAGES = {
   avatar4:
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&q=80",
 };
+
+const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
 
 const COPY = {
   en: {
@@ -202,8 +207,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Phone",
-      phoneValue: "1-561-476-0504",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Chat with us",
     },
 
     callChecklist: {
@@ -381,8 +386,8 @@ const COPY = {
     },
 
     contact: {
-      phoneLabel: "Téléphone",
-      phoneValue: "1-561-476-0504",
+      whatsappLabel: "WhatsApp",
+      whatsappText: "Écrivez-nous",
     },
 
     callChecklist: {
@@ -448,7 +453,6 @@ export default function InsurancePage() {
       name: "Leads Podium",
       description: t.seo.description,
       areaServed: ["US", "CA"],
-      telephone: t.contact.phoneValue,
       url: window.location.href,
       serviceType: "Insurance lead generation",
     });
@@ -501,10 +505,12 @@ export default function InsurancePage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href={`tel:${t.contact.phoneValue}`}
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
-                <Phone className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 {t.heroCtaSecondary}
               </a>
               <a
@@ -842,10 +848,12 @@ export default function InsurancePage() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={`tel:${t.contact.phoneValue}`}
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-white text-indigo-700 px-6 py-3 text-sm font-semibold shadow-sm hover:bg-white/90 transition"
               >
-                <Phone className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 {t.callChecklist.button}
               </a>
             </div>

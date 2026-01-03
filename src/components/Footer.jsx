@@ -1,10 +1,14 @@
 import React from "react";
-import { Target, Phone, Mail, MapPin } from "lucide-react";
+import { Target, MessageCircle, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
 
 export default function Footer() {
   const { language } = useLanguage();
+
+  const WHATSAPP_URL =
+  import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/972587990022";
+
 
   const t = {
     fr: {
@@ -56,7 +60,7 @@ export default function Footer() {
       copyright: "© 2025 Leads Podium. All rights reserved.",
     },
   }[language];
-
+  
   return (
     <footer className="bg-gray-900 text-gray-400">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
@@ -180,11 +184,18 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-indigo-400" />
-                <a href="tel:15614760504" className="hover:text-white transition">
-                  +1 561 476 0504
+                <MessageCircle className="w-4 h-4 text-indigo-400" />
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-white transition"
+                >
+                  WhatsApp
                 </a>
               </li>
+
+
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-indigo-400" />
                 <a

@@ -16,6 +16,7 @@ import EducationPage from "./pages/EducationPage";
 
 
 
+
 export default function App() {
   return (
     <BrowserRouter>
